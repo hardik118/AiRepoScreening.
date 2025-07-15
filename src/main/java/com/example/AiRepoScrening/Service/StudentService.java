@@ -1,4 +1,4 @@
 package com.example.AiRepoScrening.Service;
 
-public class TeacherService  i{
+public class StudentService {
 }
