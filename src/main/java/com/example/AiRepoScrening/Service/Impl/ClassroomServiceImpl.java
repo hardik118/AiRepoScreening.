@@ -1,4 +1,4 @@
-package com.example.AiRepoScrening.Impl;
+package com.example.AiRepoScrening.Service.Impl;
 
 import com.example.AiRepoScrening.Dto.Response.AssignmentResDto;
 import com.example.AiRepoScrening.Dto.Response.ClassroomResDto;
@@ -8,9 +8,8 @@ import java.util.List;
 
 public interface ClassroomServiceImpl {
 
-    ClassroomResDto createClassroom(ClassroomResDto classroomResDto);
     ClassroomResDto findClassroomByTeacherId(Long teacherId);
-    List<StudentResDto> findStudentsByClassroomId(Long classroomId);
+
     List<AssignmentResDto> findAssignmentsByClassroomId(Long classroomId);
 
 

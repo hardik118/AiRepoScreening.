@@ -3,7 +3,9 @@ package com.example.AiRepoScrening.mapper;
 import com.example.AiRepoScrening.Dto.Request.FeedbackReqDto;
 import com.example.AiRepoScrening.Dto.Response.FeedbackResDto;
 import com.example.AiRepoScrening.Model.Feedback;
+import lombok.Data;
 import org.mapstruct.Mapper;
+
 
 @Mapper(componentModel = "spring")
 public interface FeedbackMapper {

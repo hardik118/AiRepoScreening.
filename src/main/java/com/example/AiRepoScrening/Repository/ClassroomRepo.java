@@ -10,6 +10,8 @@ import java.util.Optional;
 
 public interface ClassroomRepo  extends JpaRepository<Classroom, Long> {
     Optional<Classroom> findByclassroomId(Long Id);
+    Optional<Classroom> findByUniqueId(Long uniqueId);
     Optional<Classroom> findByTeacherId(Long teacherId);
+
 
 }

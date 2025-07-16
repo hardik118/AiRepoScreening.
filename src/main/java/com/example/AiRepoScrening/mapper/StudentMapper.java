@@ -13,8 +13,8 @@ public interface StudentMapper {
     StudentResDto toDto(Student student);
 
     // request handling
-    Student toRequestDto(StudentReqDto dto);
-    StudentReqDto fromRequestDto(Student student);
+    Student fromRequestDto(StudentReqDto dto);
+    StudentReqDto toRequestDto(Student student);
 
 
 

@@ -1,4 +1,4 @@
-package com.example.AiRepoScrening.Impl;
+package com.example.AiRepoScrening.Service.Impl;
 
 import com.example.AiRepoScrening.Dto.Request.AssignmentReqDto;
 import com.example.AiRepoScrening.Dto.Request.ClassroomReqDto;
@@ -15,7 +15,7 @@ public interface TeacherServiceImpl {
     TeacherResDto login(String email, String password);
     TeacherResDto viewProfile(Long teacherId);
    void createClassroom(Long teacherId, ClassroomReqDto classroomReqDto);
-   ClassroomResDto viewClassroom(ClassroomReqDto classroomReqDto);
+   ClassroomResDto viewClassroom(Long  uniqueClassroomId);
    void createAssignment(Long teacherId, AssignmentReqDto assignmentReqDto);
    List<SubmissionResDto> viewSubmissions(Long teacherId, Long assignmentId);
    List<StudentResDto> viewStudents(Long teacherId, Long classroomId);
