@@ -11,6 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "classroom")
+@ToString(exclude = {"teacher", "students", "assignments"})
+
 public class Classroom {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,14 +24,14 @@ public class Classroom {
     @Column(unique = true, nullable = false)
     private Long uniqueId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
-    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Student> students;
 
-    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Assignments> assignments ;
 
 

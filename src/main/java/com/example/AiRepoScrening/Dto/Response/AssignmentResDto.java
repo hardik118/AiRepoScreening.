@@ -1,9 +1,11 @@
 package com.example.AiRepoScrening.Dto.Response;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
 public class AssignmentResDto {
     private  Long Id;
 

@@ -4,7 +4,9 @@ import com.example.AiRepoScrening.Model.Teacher;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import lombok.Data;
 
+@Data
 public class ClassroomReqDto {
     private  String name;
 

@@ -98,7 +98,18 @@
 			<version>0.2.0</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+		</dependency>
 
+		<!-- If you need testing support -->
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka-test</artifactId>
+			<version>[secure-version]</version> <!-- Replace with the latest secure version -->
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 
