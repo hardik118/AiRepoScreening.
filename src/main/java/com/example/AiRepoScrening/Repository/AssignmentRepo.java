@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 
 public interface AssignmentRepo extends JpaRepository<Assignments, Long> {
-    List<Assignments> findByClassroomId(Long classroomId);
-    List<Assignments> findByTeacherId(Long teacherId); // if stored
+    List<Assignments> findAllByClassroomId(Long classroomId);
+    List<Assignments> findAllByCreatedBy_Id(Long teacherId);
 
 }

@@ -6,11 +6,12 @@ import com.example.AiRepoScrening.Repository.SubmissionRepo;
 import com.example.AiRepoScrening.Service.Impl.SubmissionServiceImpl;
 import com.example.AiRepoScrening.mapper.SubmissionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+@Service
 public class SubmissionService implements SubmissionServiceImpl {
 
     @Autowired
@@ -22,7 +23,7 @@ public class SubmissionService implements SubmissionServiceImpl {
 
     @Override
     public List<SubmissionResDto> viewSubmissionByAssignmentId(Long assignmentId){
-        List<Submissions> submissionsList= submissionRepo.findByAssignmentId(assignmentId);
+        List<Submissions> submissionsList= submissionRepo.findAllByAssignments_Id(assignmentId);
         if(submissionsList.isEmpty()) throw  new RuntimeException("no Submission for the following assignment");
 
         return submissionsList.stream()
@@ -32,7 +33,7 @@ public class SubmissionService implements SubmissionServiceImpl {
     }
     @Override
     public   List<SubmissionResDto> viewSubmissionByStudentId(Long studentId){
-        List<Submissions> submissionsList= submissionRepo.findByStudentId(studentId);
+        List<Submissions> submissionsList= submissionRepo.findAllByStudentId(studentId);
         if(submissionsList.isEmpty()) throw  new RuntimeException("no Submission for the following student");
 
         return submissionsList.stream()

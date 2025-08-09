@@ -3,22 +3,22 @@ package com.example.AiRepoScrening.Service;
 import com.example.AiRepoScrening.Dto.Request.AssignmentReqDto;
 import com.example.AiRepoScrening.Dto.Request.ClassroomReqDto;
 import com.example.AiRepoScrening.Dto.Request.TeacherReqDto;
-import com.example.AiRepoScrening.Dto.Response.ClassroomResDto;
-import com.example.AiRepoScrening.Dto.Response.StudentResDto;
-import com.example.AiRepoScrening.Dto.Response.SubmissionResDto;
-import com.example.AiRepoScrening.Dto.Response.TeacherResDto;
+import com.example.AiRepoScrening.Dto.Response.*;
 import com.example.AiRepoScrening.Model.*;
 import com.example.AiRepoScrening.Repository.*;
 import com.example.AiRepoScrening.Service.Impl.TeacherServiceImpl;
 import com.example.AiRepoScrening.mapper.*;
-import org.hibernate.sql.ast.tree.update.Assignment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class TeacherService  implements TeacherServiceImpl {
 
     @Autowired
@@ -30,14 +30,10 @@ public class TeacherService  implements TeacherServiceImpl {
     @Autowired
     private ClassroomRepo classroomRepo;
 
-    @Autowired
-    private Classroom classroom;
 
     @Autowired
     private ClassroomMapper classroomMapper;
 
-    @Autowired
-    private Assignment assignment;
 
     @Autowired
     private AssignmentMapper assignmentMapper;
@@ -45,8 +41,6 @@ public class TeacherService  implements TeacherServiceImpl {
     @Autowired
     private AssignmentRepo assignmentRepo;
 
-    @Autowired
-    private Submissions submissions;
 
     @Autowired
     private SubmissionMapper submissionMapper;
@@ -55,14 +49,12 @@ public class TeacherService  implements TeacherServiceImpl {
     private SubmissionRepo submissionRepo;
 
     @Autowired
-    private Student student;
-
-    @Autowired
     private  StudentRepo studentRepo;
 
     @Autowired
     private StudentMapper studentMapper;
 
+    private static final Logger logger = LoggerFactory.getLogger(TeacherService.class);
 
 
 
@@ -95,22 +87,31 @@ public class TeacherService  implements TeacherServiceImpl {
     @Override
     public  TeacherResDto viewProfile(Long teacherId){
         Teacher teacherToExists = teacherRepo.findById(teacherId).
-                orElseThrow(()->new RuntimeException("user does't exists  "));
+                orElseThrow(()->new RuntimeException("user doesn't exists  "));
 
         return teacherMapper.toDto(teacherToExists);
     }
 
     @Override
     public  void createClassroom(Long teacherId, ClassroomReqDto classroomReqDto){
-        Teacher teacherToExists = teacherRepo.findById(teacherId).
-                orElseThrow(()->new RuntimeException("Teacher  does't exists  "));
+        Optional<Teacher> teacherToExists = teacherRepo.findById(teacherId);
+        System.out.println(teacherToExists+" id "+teacherId);
+
+        if(teacherToExists.isEmpty()) throw new RuntimeException("Teacher does not exists");
+        logger.info("Teacher found: {} with ID: {}", teacherToExists.get(), teacherId);
+
 
         Classroom classroom =  classroomMapper.fromRequestDto(classroomReqDto);
 
-        Classroom classroomToExists= classroomRepo.findByTeacherId(teacherId)
-                .orElseThrow(()->new RuntimeException("class room already exists cannot create more than 1 classroom invalid operation."));
+        Optional<Classroom> existingClassroom = classroomRepo.findByTeacherId(teacherId);
 
-        Classroom createdClassroom = classroomRepo.save(classroom);
+        if (existingClassroom.isPresent()) {
+            throw new RuntimeException("Classroom already exists. Cannot create more than one classroom.");
+        }
+
+        classroom.setTeacher(teacherToExists.get());
+
+        classroomRepo.save(classroom);
         return;
     }
     @Override
@@ -119,8 +120,10 @@ public class TeacherService  implements TeacherServiceImpl {
         Classroom classroomToExists= classroomRepo.findByUniqueId(uniqueClassroomId)
                 .orElseThrow(()->new RuntimeException("classroom doesn't exists: invalid operation."));
 
+        logger.info("Classroom object from db before mapping to resDto {}", classroomToExists);
 
-       return  classroomMapper.toDto(classroomToExists);
+
+        return  classroomMapper.toDto(classroomToExists);
 
 
     }
@@ -130,9 +133,15 @@ public class TeacherService  implements TeacherServiceImpl {
         Teacher teacherToExists = teacherRepo.findById(teacherId).
                 orElseThrow(()->new RuntimeException("Teacher  doesn't exists  "));
 
-        Assignments assignments = assignmentMapper.fromRequestDto(assignmentReqDto);
+        Classroom classroom = classroomRepo.findById(assignmentReqDto.getClassroomId())
+                .orElseThrow(() -> new RuntimeException("Classroom does not exist"));
 
-        Assignments assignmentSaved= assignmentRepo.save(assignments);
+
+        Assignments assignments = assignmentMapper.fromRequestDto(assignmentReqDto);
+        // Set the teacher and classroom manually
+        assignments.setCreatedBy(teacherToExists);
+        assignments.setClassroom(classroom);
+        assignmentRepo.save(assignments);
 
         return;
 
@@ -147,7 +156,7 @@ public class TeacherService  implements TeacherServiceImpl {
                 .orElseThrow(()->new RuntimeException("No assignment for such id req exists"));
 
 
-        List<Submissions> submissionsList= submissionRepo.findByAssignmentId(assignmentId);
+        List<Submissions> submissionsList= submissionRepo.findAllByAssignments_Id(assignmentId);
 
         return submissionsList.stream()
                 .map(submissionMapper::toDto)
@@ -161,10 +170,10 @@ public class TeacherService  implements TeacherServiceImpl {
         Teacher teacherToExists = teacherRepo.findById(teacherId).
                 orElseThrow(()->new RuntimeException("Teacher  doesn't exists  "));
 
-        Classroom classroomToExists= classroomRepo.findByclassroomId(classroomId)
+        Classroom classroomToExists= classroomRepo.findById(classroomId)
                 .orElseThrow(()->new RuntimeException("classroom doesn't exists: invalid operation."));
 
-        List<Student> studentList= studentRepo.findBYClassroomId(classroomId);
+        List<Student> studentList= studentRepo.findByClassroom_Id(classroomId);
 
         return studentList.stream()
                 .map(studentMapper::toDto)
@@ -172,6 +181,23 @@ public class TeacherService  implements TeacherServiceImpl {
 
 
     }
+
+    @Override
+    public List<AssignmentResDto> viewClassroomAssignments(Long classroomId){
+
+
+        Classroom classroomToExists= classroomRepo.findById(classroomId)
+                .orElseThrow(()->new RuntimeException("classroom doesn't exists: invalid operation."));
+
+        List<Assignments> assignmentsList= assignmentRepo.findAllByClassroomId(classroomId);
+
+        return assignmentsList.stream()
+                .map(assignmentMapper::toDto)
+                .collect(Collectors.toList());
+
+
+    }
+
 
 
 

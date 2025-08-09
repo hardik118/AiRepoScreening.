@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "assignments")
+@ToString(exclude = {"classroom", "createdBy", "submissions"})
 public class Assignments {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,7 +33,7 @@ public class Assignments {
 
     @ManyToOne
     @JoinColumn(name = "created_by")
-    private Teacher created_by;
+    private Teacher createdBy;
 
     @OneToMany(mappedBy = "assignments", cascade = CascadeType.ALL)
     private List<Submissions> submissions;

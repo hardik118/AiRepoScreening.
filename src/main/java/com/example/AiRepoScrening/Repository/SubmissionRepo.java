@@ -9,8 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface SubmissionRepo extends JpaRepository<Submissions, Long> {
-    List<Submissions> findByStudentId(Long studentId);
-    List<Submissions> findByAssignmentId(Long assignmentId);
-    Optional<Submissions> findByAssignmentIdAndStudentId(Long assignmentId, Long studentId);
+    List<Submissions> findAllByStudentId(Long studentId);
+    List<Submissions> findAllByAssignments_Id(Long assignmentId); // ✅ This will work
+
 
 }
+

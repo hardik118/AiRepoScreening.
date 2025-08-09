@@ -12,10 +12,13 @@ import com.example.AiRepoScrening.Service.Impl.ClassroomServiceImpl;
 import com.example.AiRepoScrening.mapper.AssignmentMapper;
 import com.example.AiRepoScrening.mapper.ClassroomMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+@Service
 
 public class ClassroomService implements ClassroomServiceImpl {
 
@@ -49,7 +52,7 @@ public class ClassroomService implements ClassroomServiceImpl {
         Classroom classroom= classroomRepo.findById(classroomId)
                 .orElseThrow(()->new RuntimeException(" no such classroom exists"));
 
-        List<Assignments> assignmentstList= assignmentRepo.findByClassroomId(classroomId);
+        List<Assignments> assignmentstList= assignmentRepo.findAllByClassroomId(classroomId);
         if(assignmentstList.isEmpty()) throw  new RuntimeException("no assignment is created by teacher for now");
 
         return  assignmentstList.stream()

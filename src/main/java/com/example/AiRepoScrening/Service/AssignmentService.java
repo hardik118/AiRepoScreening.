@@ -10,10 +10,12 @@ import com.example.AiRepoScrening.Repository.TeacherRepo;
 import com.example.AiRepoScrening.Service.Impl.AssignmentServiceImpl;
 import com.example.AiRepoScrening.mapper.AssignmentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+@Service
 
 public class AssignmentService implements AssignmentServiceImpl {
 
@@ -44,7 +46,7 @@ public class AssignmentService implements AssignmentServiceImpl {
         Teacher  teacher =  teacherRepo.findById(teacherId)
                 .orElseThrow(()->new RuntimeException("NO teacher with such id found "));
 
-       List<Assignments>  assignmentsList = assignmentRepo.findByTeacherId(teacherId);
+       List<Assignments>  assignmentsList = assignmentRepo.findAllByCreatedBy_Id(teacherId);
        if(assignmentsList.isEmpty()) throw  new RuntimeException("not assignment could be found ");
 
        return  assignmentsList.stream()
@@ -59,7 +61,7 @@ public class AssignmentService implements AssignmentServiceImpl {
        Classroom classroom =  classroomRepo.findById(classroomId)
                 .orElseThrow(()->new RuntimeException("NO classroom with such id found "));
 
-        List<Assignments>  assignmentsList = assignmentRepo.findByClassroomId(classroomId);
+        List<Assignments>  assignmentsList = assignmentRepo.findAllByClassroomId(classroomId);
         if(assignmentsList.isEmpty()) throw  new RuntimeException("not assignment could be found ");
 
         return  assignmentsList.stream()

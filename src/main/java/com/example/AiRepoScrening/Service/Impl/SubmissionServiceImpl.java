@@ -6,7 +6,6 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "Spring")
 public interface SubmissionServiceImpl {
 
   List<SubmissionResDto> viewSubmissionByAssignmentId(Long assignmentId);
