@@ -28,12 +28,6 @@ public class AssignmentController {
         return ResponseEntity.ok(assignment);
     }
 
-    @GetMapping("/teacher/{teacherId}")
-    public ResponseEntity<List<AssignmentResDto>> getAssignmentsByTeacherId(@PathVariable Long teacherId) {
-        List<AssignmentResDto> assignments = assignmentService.getAssignmentByTeacherId(teacherId);
-        return ResponseEntity.ok(assignments);
-    }
-
     @GetMapping("/classroom/{classroomId}")
     public ResponseEntity<List<AssignmentResDto>> getAssignmentsByClassroomId(@PathVariable Long classroomId) {
         List<AssignmentResDto> assignments = assignmentService.getAssignmentByClassroomId(classroomId);
