@@ -22,22 +22,6 @@ public class TeacherController {
     }
 
 
-
-    //1- signup
-    @PostMapping("/Signup")
-    public TeacherResDto Signup(@RequestBody TeacherReqDto teacherReqDto){
-        return teacherService.signup(teacherReqDto);
-
-    }
-
-    //2-login
-
-    @PostMapping("/login")
-    public TeacherResDto login(@RequestBody LoginReqDto loginReqDto){
-        return teacherService.login(loginReqDto.getEmail(), loginReqDto.getPassword());
-
-    }
-
     // 3. View Profile
     @GetMapping("/{teacherId}/profile")
     public TeacherResDto viewProfile(@PathVariable Long teacherId) {

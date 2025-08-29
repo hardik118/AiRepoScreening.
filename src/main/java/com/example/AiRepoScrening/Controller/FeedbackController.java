@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/api/main/feedback")
+@RequestMapping("/v1/api/main/student/feedback")
 public class FeedbackController {
 
     @Autowired
