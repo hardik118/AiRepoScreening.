@@ -1,7 +1,6 @@
 package com.example.AiRepoScrening.Service;
 
 import com.example.AiRepoScrening.Dto.Request.StudentReqDto;
-import com.example.AiRepoScrening.Dto.Response.AssignmentResDto;
 import com.example.AiRepoScrening.Dto.Response.FeedbackResDto;
 import com.example.AiRepoScrening.Dto.Response.StudentResDto;
 import com.example.AiRepoScrening.Kafka.FeedbackProducer;
@@ -10,7 +9,6 @@ import com.example.AiRepoScrening.Repository.*;
 import com.example.AiRepoScrening.Service.Impl.StudentServiceImpl;
 import com.example.AiRepoScrening.mapper.FeedbackMapper;
 import com.example.AiRepoScrening.mapper.StudentMapper;
-import lombok.extern.flogger.Flogger;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +17,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Optional;
 @Slf4j
 @Service
