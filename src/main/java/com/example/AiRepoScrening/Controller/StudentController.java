@@ -18,18 +18,6 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    // 1. Signup
-    @PostMapping("/signup/{classroomId}")
-    public StudentResDto signup(@PathVariable Long classroomId, @RequestBody StudentReqDto studentReqDto) {
-        return studentService.signup(classroomId, studentReqDto);
-    }
-
-    // 2. Login
-    @PostMapping("/login")
-    public StudentResDto login(@RequestBody LoginReqDto loginDto) {
-        return studentService.login(loginDto.getEmail(), loginDto.getPassword());
-    }
-
 
 
     // 4. Submit Assignment
